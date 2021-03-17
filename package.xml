@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>simple_moveit_wrapper</name>
+  <version>0.0.0</version>
+  <description>The simple_moveit_wrapper package</description>
+
+  <maintainer email="jeroen.demaeyer@kuleuven.be">Jeroen De Maeyer</maintainer>
+
+  <license>BSD</license>
+
+  <!-- <url type="website">http://wiki.ros.org/simple_moveit_wrapper</url> -->
+
+  <author email="jeroen.demaeyer@kuleuven.be">Jeroen De Maeyer</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>moveit_core</depend>
+  <depend>moveit_ros_planning</depend>
+  <depend>moveit_visual_tools</depend>
+
+  <test_depend>rostest</test_depend>
+  <test_depend>moveit_resources_fanuc_moveit_config</test_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>

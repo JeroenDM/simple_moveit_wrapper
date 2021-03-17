@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+<include file="$(find moveit_resources_fanuc_moveit_config)/launch/planning_context.launch">
+  <arg name="load_robot_description" value="true"/>
+</include>
+
+<rosparam command="load" file="$(find simple_moveit_wrapper)/test/opw_kinematics_fanuc.yaml"/>
+
+<param name="tip_link" value="tool0" />
+<param name="root_link" value="base_link" />
+<param name="group" value="manipulator" />
+
+<test pkg="simple_moveit_wrapper" type="simple_moveit_wrapper_test_fanuc" test-name="test_fanuc"/>
+
+</launch>

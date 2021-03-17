@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+
+<rosparam command="load" file="$(find simple_moveit_wrapper)/test/opw_kinematics_fanuc.yaml"/>
+
+<node pkg="simple_moveit_wrapper" type="ultra_light_cartesian_planner" name="ultra_light_cartesian_planner" output="screen"/>
+
+</launch>
