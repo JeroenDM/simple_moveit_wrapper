@@ -134,15 +134,24 @@ class Robot
         return num_red_dof_;
     }
 
-    const std::vector<Bounds>& getJointPositionLimits()
+    const std::vector<Bounds>& getJointPositionLimits() const
     {
         return joint_position_limits_;
     }
 
-    const std::vector<Bounds>& getJointVelocityLimits()
+    const std::vector<Bounds>& getJointVelocityLimits() const
     {
         return joint_velocity_limits_;
     }
+
+    /** Returns a standard vector with random joint positions. **/
+    std::vector<double> randomJointPositions() const;
+
+    /** Put random joint positions in existing Eigen vector.
+     * 
+     * Using Eigen::Ref is not supported here in the existing MoveIt interface.
+     * **/
+    void randomJointPositions(Eigen::VectorXd& out);
 
     void plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, JointPositions& joint_pose,
               const rviz_visual_tools::colors& color = rviz_visual_tools::DEFAULT);

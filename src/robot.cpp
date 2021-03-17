@@ -75,7 +75,6 @@ Transform Robot::fk(const Eigen::Ref<const Eigen::VectorXd>& q) const
     return robot_state->getGlobalLinkTransform(tcp_frame_);
 }
 
-
 Transform Robot::fk(const std::vector<double>& q, const std::string& frame) const
 {
     auto robot_state = state_storage_.getAState();
@@ -89,7 +88,6 @@ Transform Robot::fk(const Eigen::Ref<const Eigen::VectorXd>& q, const std::strin
     robot_state->setJointGroupPositions(joint_model_group_, q);
     return robot_state->getGlobalLinkTransform(frame);
 }
-
 
 std::vector<JointPositions> Robot::ik(const Transform& tf) const
 {
@@ -178,6 +176,22 @@ bool Robot::isPathColliding(const JointPositions& q_from, const JointPositions& 
         }
     }
     return false;
+}
+
+std::vector<double> Robot::randomJointPositions() const
+{
+    auto robot_state = state_storage_.getAState();
+    robot_state->setToRandomPositions();
+    std::vector<double> joint_values;
+    robot_state->copyJointGroupPositions(joint_model_group_, joint_values);
+    return joint_values;
+}
+
+void Robot::randomJointPositions(Eigen::VectorXd& out)  // Eigen::Ref is not available to copy to in MoveIt
+{
+    auto robot_state = state_storage_.getAState();
+    robot_state->setToRandomPositions();
+    robot_state->copyJointGroupPositions(joint_model_group_, out);
 }
 
 void Robot::plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, std::vector<double>& joint_pose,
