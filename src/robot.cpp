@@ -148,6 +148,14 @@ Eigen::MatrixXd Robot::jacobian(const std::vector<double>& q) const
     return robot_state->getJacobian(joint_model_group_);
 }
 
+Eigen::MatrixXd Robot::jacobian(const Eigen::Ref<const Eigen::VectorXd>& q) const
+{
+    auto robot_state = state_storage_.getAState();
+    Eigen::Vector3d reference_point(0.0, 0.0, 0.0);
+    robot_state->setJointGroupPositions(joint_model_group_, q);
+    return robot_state->getJacobian(joint_model_group_);
+}
+
 void Robot::updatePlanningScene()
 {
     // I'm not sure yet how this works

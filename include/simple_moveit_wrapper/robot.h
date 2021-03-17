@@ -115,6 +115,7 @@ class Robot
     virtual std::vector<JointPositions> ik(const Transform& tf, const std::vector<double>& q_redundant) const;
 
     Eigen::MatrixXd jacobian(const JointPositions& q) const;
+    Eigen::MatrixXd jacobian(const Eigen::Ref<const Eigen::VectorXd>& q) const;
 
     const Transform& getLinkFixedRelativeTransform(const std::string& name) const;
 
