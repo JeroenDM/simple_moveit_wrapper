@@ -27,7 +27,7 @@ IndustrialRobot::IndustrialRobot(const std::string& planning_group, const std::s
     num_red_dof_ = num_red_joints_;
 }
 
-std::vector<JointPositions> IndustrialRobot::ik(const Transform& tf)
+std::vector<JointPositions> IndustrialRobot::ik(const Transform& tf) const
 {
     if (is_redundant_)
     {
@@ -40,7 +40,7 @@ std::vector<JointPositions> IndustrialRobot::ik(const Transform& tf)
     }
 }
 
-std::vector<JointPositions> IndustrialRobot::ik(const Transform& pose, const std::vector<double>& q_redundant)
+std::vector<JointPositions> IndustrialRobot::ik(const Transform& pose, const std::vector<double>& q_redundant) const
 {
     std::vector<JointPositions> joint_poses;
 

@@ -88,9 +88,11 @@ class Robot
     Robot(const std::string& planning_group = "manipulator", const std::string& tcp_frame = "tool0");
     virtual ~Robot() = default;
 
-    const Transform& fk(const JointPositions& q) const;
+    Transform fk(const JointPositions& q) const;
+    Transform fk(const Eigen::Ref<const Eigen::VectorXd>& q) const;
 
-    const Transform& fk(const JointPositions& q, const std::string& frame) const;
+    Transform fk(const JointPositions& q, const std::string& frame) const;
+    Transform fk(const Eigen::Ref<const Eigen::VectorXd>& q, const std::string& frame) const;
 
     /** \brief Inverse kinematics
      *
@@ -100,7 +102,7 @@ class Robot
      * (TODO) Return multiple solutions from MoveIts IK plugin.
      *
      * **/
-    virtual std::vector<JointPositions> ik(const Transform& tf);
+    virtual std::vector<JointPositions> ik(const Transform& tf) const;
 
     /** \brief Redundant inverse kinematics
      *
@@ -110,9 +112,9 @@ class Robot
      * the base joints for the given end-effector pose.
      *
      * **/
-    virtual std::vector<JointPositions> ik(const Transform& tf, const std::vector<double>& q_redundant);
+    virtual std::vector<JointPositions> ik(const Transform& tf, const std::vector<double>& q_redundant) const;
 
-    Eigen::MatrixXd jacobian(const JointPositions& q);
+    Eigen::MatrixXd jacobian(const JointPositions& q) const;
 
     const Transform& getLinkFixedRelativeTransform(const std::string& name) const;
 

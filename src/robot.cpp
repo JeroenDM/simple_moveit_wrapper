@@ -61,21 +61,37 @@ const Transform& Robot::getLinkFixedRelativeTransform(const std::string& frame) 
     return robot_state->getLinkModel(frame)->getJointOriginTransform();
 }
 
-const Transform& Robot::fk(const std::vector<double>& q) const
+Transform Robot::fk(const std::vector<double>& q) const
 {
     auto robot_state = state_storage_.getAState();
     robot_state->setJointGroupPositions(joint_model_group_, q);
     return robot_state->getGlobalLinkTransform(tcp_frame_);
 }
 
-const Transform& Robot::fk(const std::vector<double>& q, const std::string& frame) const
+Transform Robot::fk(const Eigen::Ref<const Eigen::VectorXd>& q) const
+{
+    auto robot_state = state_storage_.getAState();
+    robot_state->setJointGroupPositions(joint_model_group_, q);
+    return robot_state->getGlobalLinkTransform(tcp_frame_);
+}
+
+
+Transform Robot::fk(const std::vector<double>& q, const std::string& frame) const
 {
     auto robot_state = state_storage_.getAState();
     robot_state->setJointGroupPositions(joint_model_group_, q);
     return robot_state->getGlobalLinkTransform(frame);
 }
 
-std::vector<JointPositions> Robot::ik(const Transform& tf)
+Transform Robot::fk(const Eigen::Ref<const Eigen::VectorXd>& q, const std::string& frame) const
+{
+    auto robot_state = state_storage_.getAState();
+    robot_state->setJointGroupPositions(joint_model_group_, q);
+    return robot_state->getGlobalLinkTransform(frame);
+}
+
+
+std::vector<JointPositions> Robot::ik(const Transform& tf) const
 {
     auto robot_state = state_storage_.getAState();
     double timeout = 0.1;
@@ -96,7 +112,7 @@ std::vector<JointPositions> Robot::ik(const Transform& tf)
     return sol;
 }
 
-std::vector<JointPositions> Robot::ik(const Transform& tf, const std::vector<double>& q_redundant)
+std::vector<JointPositions> Robot::ik(const Transform& tf, const std::vector<double>& q_redundant) const
 {
     double timeout = 0.1;
     auto robot_state = state_storage_.getAState();
@@ -126,7 +142,7 @@ std::vector<JointPositions> Robot::ik(const Transform& tf, const std::vector<dou
     return sol;
 }
 
-Eigen::MatrixXd Robot::jacobian(const std::vector<double>& q)
+Eigen::MatrixXd Robot::jacobian(const std::vector<double>& q) const
 {
     auto robot_state = state_storage_.getAState();
     Eigen::Vector3d reference_point(0.0, 0.0, 0.0);

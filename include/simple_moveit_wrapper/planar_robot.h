@@ -16,8 +16,8 @@ class PlanarRobot : public Robot
 
   public:
     PlanarRobot(const std::string& planning_group = "manipulator", const std::string& tcp_frame = "tool0");
-    std::vector<JointPositions> ik(const Transform& tf) override;
-    std::vector<JointPositions> ik(const Transform& tf, const std::vector<double>& q_redundant) override;
+    std::vector<JointPositions> ik(const Transform& tf) const override;
+    std::vector<JointPositions> ik(const Transform& tf, const std::vector<double>& q_redundant) const override;
 };
 
 // class IndustrialRobot : public Robot

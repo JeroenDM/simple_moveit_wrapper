@@ -38,13 +38,13 @@ void PlanarRobot::messyHardCodedStuff()
     analytical_ik_link_length_.push_back(getLinkFixedRelativeTransform("flange").translation().norm());
 }
 
-std::vector<JointPositions> PlanarRobot::ik(const Transform& tf)
+std::vector<JointPositions> PlanarRobot::ik(const Transform& tf) const
 {
     std::vector<double> zeros(num_dof_ - num_base_joints_, 0.0);
     return ik(tf, zeros);
 }
 
-std::vector<JointPositions> PlanarRobot::ik(const Transform& tf, const std::vector<double>& q_fixed)
+std::vector<JointPositions> PlanarRobot::ik(const Transform& tf, const std::vector<double>& q_fixed) const
 {
     // set ik based given the fixed joint values q_fixed
     std::vector<double> q_temp(num_dof_, 0.0);
