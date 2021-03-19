@@ -211,6 +211,23 @@ void Robot::plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, std::vector<doub
     mvt->trigger();
 }
 
+/** Simultaniously plot the pose of multiple planning groups.
+ *
+ * This function can be called on any robot, but uses the robot_state in the particular robot it is called on the
+ * visualize the poses in rviz.
+ *  **/
+void Robot::plotMultipleGroups(moveit_visual_tools::MoveItVisualToolsPtr mvt,
+                        const std::map<std::string, JointPositions>& joint_values_map, const rviz_visual_tools::colors& color)
+{
+    auto robot_state = state_storage_.getAState();
+    for (auto group_values : joint_values_map)
+    {
+        robot_state->setJointGroupPositions(group_values.first, group_values.second);
+    }    
+    mvt->publishRobotState(robot_state, color);
+    mvt->trigger();
+}
+
 void Robot::animatePath(moveit_visual_tools::MoveItVisualToolsPtr mvt, const std::vector<JointPositions>& path)
 {
     for (JointPositions q : path)

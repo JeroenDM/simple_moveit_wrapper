@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include <Eigen/Dense>
 
@@ -149,13 +150,22 @@ class Robot
     std::vector<double> randomJointPositions() const;
 
     /** Put random joint positions in existing Eigen vector.
-     * 
+     *
      * Using Eigen::Ref is not supported here in the existing MoveIt interface.
      * **/
     void randomJointPositions(Eigen::VectorXd& out);
 
     void plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, JointPositions& joint_pose,
               const rviz_visual_tools::colors& color = rviz_visual_tools::DEFAULT);
+
+    /** Simultaneously plot the pose of multiple planning groups.
+     *
+     * This function can be called on any robot, but uses the robot_state in the particular robot it is called on the
+     * visualize the poses in rviz.
+     *  **/
+    void plotMultipleGroups(moveit_visual_tools::MoveItVisualToolsPtr mvt,
+                            const std::map<std::string, JointPositions>& joint_values_map,
+                            const rviz_visual_tools::colors& color = rviz_visual_tools::DEFAULT);
 
     /** Show the different robot poses along the path with a short delay in between.
      *
