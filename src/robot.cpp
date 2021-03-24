@@ -186,6 +186,16 @@ bool Robot::isPathColliding(const JointPositions& q_from, const JointPositions& 
     return false;
 }
 
+const std::vector<std::string> Robot::getJointNames() const
+{
+    return joint_model_group_->getActiveJointModelNames();
+}
+
+const moveit::core::RobotStatePtr Robot::getMoveItRobotState() const
+{
+    return state_storage_.getAState();
+}
+
 std::vector<double> Robot::randomJointPositions() const
 {
     auto robot_state = state_storage_.getAState();
@@ -217,13 +227,14 @@ void Robot::plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, std::vector<doub
  * visualize the poses in rviz.
  *  **/
 void Robot::plotMultipleGroups(moveit_visual_tools::MoveItVisualToolsPtr mvt,
-                        const std::map<std::string, JointPositions>& joint_values_map, const rviz_visual_tools::colors& color)
+                               const std::map<std::string, JointPositions>& joint_values_map,
+                               const rviz_visual_tools::colors& color)
 {
     auto robot_state = state_storage_.getAState();
     for (auto group_values : joint_values_map)
     {
         robot_state->setJointGroupPositions(group_values.first, group_values.second);
-    }    
+    }
     mvt->publishRobotState(robot_state, color);
     mvt->trigger();
 }
@@ -235,7 +246,7 @@ void Robot::animatePath(moveit_visual_tools::MoveItVisualToolsPtr mvt, const std
         if (isColliding(q))
             plot(mvt, q, rviz_visual_tools::RED);
         else
-            plot(mvt, q, rviz_visual_tools::GREEN);
+            plot(mvt, q, rviz_visual_tools::DEFAULT);
         ros::Duration(0.1).sleep();
     }
 }

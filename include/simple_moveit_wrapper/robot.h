@@ -146,6 +146,9 @@ class Robot
         return joint_velocity_limits_;
     }
 
+    const std::vector<std::string> getJointNames() const;
+    const moveit::core::RobotStatePtr getMoveItRobotState() const;
+
     /** Returns a standard vector with random joint positions. **/
     std::vector<double> randomJointPositions() const;
 
