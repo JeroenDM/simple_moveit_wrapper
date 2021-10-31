@@ -158,7 +158,7 @@ class Robot
      * **/
     void randomJointPositions(Eigen::VectorXd& out);
 
-    void plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, JointPositions& joint_pose,
+    void plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, const JointPositions& joint_pose,
               const rviz_visual_tools::colors& color = rviz_visual_tools::DEFAULT);
 
     /** Simultaneously plot the pose of multiple planning groups.

@@ -212,7 +212,7 @@ void Robot::randomJointPositions(Eigen::VectorXd& out)  // Eigen::Ref is not ava
     robot_state->copyJointGroupPositions(joint_model_group_, out);
 }
 
-void Robot::plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, std::vector<double>& joint_pose,
+void Robot::plot(moveit_visual_tools::MoveItVisualToolsPtr mvt, const std::vector<double>& joint_pose,
                  const rviz_visual_tools::colors& color)
 {
     auto robot_state = state_storage_.getAState();
