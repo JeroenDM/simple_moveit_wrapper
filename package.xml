@@ -19,6 +19,11 @@
   <depend>moveit_ros_planning</depend>
   <depend>moveit_visual_tools</depend>
 
+  <build_depend>opw_kinematics</build_depend>
+
+  <exec_depend>moveit_opw_kinematics_plugin</exec_depend>
+  <exec_depend>moveit_resources_fanuc_moveit_config</exec_depend>
+
   <test_depend>rostest</test_depend>
   <test_depend>moveit_resources_fanuc_moveit_config</test_depend>
 
