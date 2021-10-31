@@ -12,8 +12,10 @@
 #include <opw_kinematics/opw_utilities.h>
 #include <opw_kinematics/opw_io.h>
 
-namespace simple_moveit_wrapper{
-IndustrialRobot::IndustrialRobot(const std::string& planning_group, const std::string& tcp_frame) : Robot(planning_group, tcp_frame)
+namespace simple_moveit_wrapper
+{
+IndustrialRobot::IndustrialRobot(const std::string& planning_group, const std::string& tcp_frame)
+  : Robot(planning_group, tcp_frame)
 {
     group_name_ = joint_model_group_->getName();
     if (num_dof_ > num_base_joints_)  // dof > 6 for 3D robots
@@ -42,7 +44,7 @@ std::vector<JointPositions> IndustrialRobot::ik(const Transform& tf) const
 
 std::vector<JointPositions> IndustrialRobot::ik(const Transform& pose, const std::vector<double>& q_redundant) const
 {
-    std::vector<JointPositions> joint_poses;
+    std::vector<JointPositions> solutions;
 
     auto tf_tool0 = pose * tool0_to_tcp_inverse_;
 
@@ -61,24 +63,15 @@ std::vector<JointPositions> IndustrialRobot::ik(const Transform& pose, const std
         tf_tool0 = base_link_pose.inverse() * tf_tool0;
     }
 
-    std::array<double, 6 * 8> sols;
-    opw_kinematics::inverse(opw_parameters_, tf_tool0, sols.data());
+    std::array<std::array<double, 6>, 8> sols = opw_kinematics::inverse(opw_parameters_, tf_tool0);
 
     // Check the output
-    std::vector<double> tmp(6);  // temporary storage for API reasons
-    for (int i = 0; i < 8; i++)
+    for (auto& q : sols)
     {
-        double* sol = sols.data() + 6 * i;
-        if (opw_kinematics::isValid(sol))
+        if (opw_kinematics::isValid(q))
         {
-            opw_kinematics::harmonizeTowardZero(sol);
-
-            // TODO: make this better...
-            std::copy(sol, sol + 6, tmp.data());
-            // if (isValid(tmp))
-            // {
-            joint_poses.push_back(tmp);
-            // }
+            opw_kinematics::harmonizeTowardZero(q);
+            solutions.emplace_back(std::vector<double>{ q.begin(), q.end() });
         }
     }
 
@@ -86,13 +79,13 @@ std::vector<JointPositions> IndustrialRobot::ik(const Transform& pose, const std
     {
         // add fixed joint values to all solutions
         // TODO is this inserting slow?
-        for (auto& q_sol : joint_poses)
+        for (auto& q_sol : solutions)
         {
             q_sol.insert(q_sol.begin(), q_redundant.begin(), q_redundant.end());
         }
     }
 
-    return joint_poses;
+    return solutions;
 }
 
 void IndustrialRobot::messyHardCodedStuff()
@@ -194,4 +187,4 @@ bool IndustrialRobot::setOPWParameters()
 
     return true;
 }
-}
+}  // namespace simple_moveit_wrapper
